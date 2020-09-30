@@ -205,8 +205,9 @@ class PortfolioVisualizerGUI:
                         data.append(key)
                         for i in td:
                             data.append(i.text)
-
-                        if len(data) == 16:
+                        data.pop(5)
+                        data.pop(6)
+                        if len(data) == 14:
                             data.append(d1)
                             all_data.append(data)
                             print('Added')
@@ -219,7 +220,7 @@ class PortfolioVisualizerGUI:
             df = pd.DataFrame(all_data,
                               columns=['Timing model', 'out of market asset', 'timing period', 'trading frequency',
                                        'Key',
-                                       'Portfolio', 'Initial Balance', 'Final Balance', 'CAGR', 'Stdev',
+                                       'Final Balance', 'CAGR', 'Stdev',
                                        'Best Year', 'Worst Year', 'Max. Drawdown', 'Sharpe Ratio',
                                        'Sortino Ratio', 'US Mkt Correlation', 'Date'])
             df.to_excel('data.xlsx', index=False)
@@ -228,7 +229,7 @@ class PortfolioVisualizerGUI:
 
         df = pd.DataFrame(all_data,
                           columns=['Timing model', 'out of market asset', 'timing period', 'trading frequency', 'Key',
-                                   'Portfolio', 'Initial Balance', 'Final Balance', 'CAGR', 'Stdev',
+                                   'Final Balance', 'CAGR', 'Stdev',
                                    'Best Year', 'Worst Year', 'Max. Drawdown', 'Sharpe Ratio',
                                    'Sortino Ratio', 'US Mkt Correlation', 'Date'])
         df = df.append(old)
