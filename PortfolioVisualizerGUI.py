@@ -64,11 +64,6 @@ class PortfolioVisualizerGUI:
     def start_on(self):
         t = threading.Thread(target=self.run_on_click)
         t.start()
-        if t.is_alive():
-            print('Still running')
-        else:
-            print('Completed')
-        print("closes")
 
     def run_on_click(self):
         if self.validate_form():
@@ -119,6 +114,9 @@ class PortfolioVisualizerGUI:
         c = 0
         k = 0
         old = pd.read_excel('data.xlsx')
+        # book = load_workbook('data.xlsx')
+        writer = pd.ExcelWriter('data.xlsx', engine='xlsxwriter')
+        # writer.book = book
         for key in keywords:
             k += 1
             print('\n\n\nkey :', key)
@@ -223,7 +221,7 @@ class PortfolioVisualizerGUI:
                                        'Final Balance', 'CAGR', 'Stdev',
                                        'Best Year', 'Worst Year', 'Max. Drawdown', 'Sharpe Ratio',
                                        'Sortino Ratio', 'US Mkt Correlation', 'Date'])
-            df.to_excel('data.xlsx', index=False)
+            df.to_excel(writer, sheet_name='portfolios', index=False)
             print('Saved..')
             self.text_area.insert(END, "\n" + "Saved..")
 
@@ -233,12 +231,37 @@ class PortfolioVisualizerGUI:
                                    'Best Year', 'Worst Year', 'Max. Drawdown', 'Sharpe Ratio',
                                    'Sortino Ratio', 'US Mkt Correlation', 'Date'])
         df = df.append(old)
-        df.to_excel('data.xlsx', index=False)
+        df.to_excel(writer, sheet_name='portfolios', index=False)
+        highest_sorts_keys = []
+        keys = {}
+        for data in df.values.tolist():
+            key = data[4]
+            if key in keys:
+                keys[key].append(data)
+            else:
+                keys[key] = [data]
+
+        for key, value in keys.items():
+            value.sort(key=sort_ratio, reverse=True)
+            highest_sorts_keys.append(value[0])
+
+        df = pd.DataFrame(highest_sorts_keys,
+                          columns=['Timing model', 'out of market asset', 'timing period', 'trading frequency', 'Key',
+                                   'Final Balance', 'CAGR', 'Stdev',
+                                   'Best Year', 'Worst Year', 'Max. Drawdown', 'Sharpe Ratio',
+                                   'Sortino Ratio', 'US Mkt Correlation', 'Date'])
+        df.to_excel(writer, sheet_name='Sortino Ratio', index=False)
         driver.close()
         driver.quit()
         del driver
         if self.button["state"] == "disabled":
             self.button["state"] = "normal"
+        writer.save()
+        # writer.close()
+
+
+def sort_ratio(data):
+    return float(data[12])
 
 
 if __name__ == '__main__':
