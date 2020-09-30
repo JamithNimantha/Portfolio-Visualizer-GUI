@@ -2,7 +2,6 @@ import threading
 import time
 from datetime import date
 from tkinter import scrolledtext, messagebox, Entry, Label, Button, WORD, Tk, END
-
 import pandas as pd
 from selenium import webdriver
 
@@ -114,9 +113,7 @@ class PortfolioVisualizerGUI:
         c = 0
         k = 0
         old = pd.read_excel('data.xlsx')
-        # book = load_workbook('data.xlsx')
         writer = pd.ExcelWriter('data.xlsx', engine='xlsxwriter')
-        # writer.book = book
         for key in keywords:
             k += 1
             print('\n\n\nkey :', key)
@@ -257,7 +254,6 @@ class PortfolioVisualizerGUI:
         if self.button["state"] == "disabled":
             self.button["state"] = "normal"
         writer.save()
-        # writer.close()
 
 
 def sort_ratio(data):
