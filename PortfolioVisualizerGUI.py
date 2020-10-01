@@ -201,7 +201,7 @@ class PortfolioVisualizerGUI:
                         for i in td:
                             data.append(i.text)
                         data.pop(5)
-                        data.pop(6)
+                        data.pop(5)
                         if len(data) == 14:
                             data.append(d1)
                             all_data.append(data)
