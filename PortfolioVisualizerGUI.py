@@ -87,9 +87,13 @@ class PortfolioVisualizerGUI:
         chrome_options.add_argument("no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument('--disable-gpu')
-        chrome_options.add_argument("--log-level=3")
+        chrome_options.add_argument("--log-level=OFF")
+        # chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
         prefs = {"profile.managed_default_content_settings.images": 2}
+        # prefs = {"download.default_directory": ""}
         chrome_options.add_experimental_option("prefs", prefs)
+        # chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
+
         driver = webdriver.Chrome(options=chrome_options, executable_path=".\chromedriver.exe")
         driver.implicitly_wait(20)
         all_data = []
@@ -116,9 +120,9 @@ class PortfolioVisualizerGUI:
         writer = pd.ExcelWriter('data.xlsx', engine='xlsxwriter')
         for key in keywords:
             k += 1
-            print('\n\n\nkey :', key)
+            # print('\n\n\nkey :', key)
             self.text_area.insert(END, "\n" + '\nkey :' + key)
-            print('{} out of {}'.format(k, len(keywords)))
+            # print('{} out of {}'.format(k, len(keywords)))
             self.text_area.insert(END, "\n" + '{} out of {}'.format(k, len(keywords)))
             for com in combo:
                 try:
@@ -205,10 +209,11 @@ class PortfolioVisualizerGUI:
                         if len(data) == 14:
                             data.append(d1)
                             all_data.append(data)
-                            print('Added')
+                            # print('Added')
                             self.text_area.insert(END, "\n" + "Added")
                         else:
-                            print(len(data))
+                            pass
+                            # print(len(data))
                 except:
                     continue
 
@@ -219,7 +224,7 @@ class PortfolioVisualizerGUI:
                                        'Best Year', 'Worst Year', 'Max. Drawdown', 'Sharpe Ratio',
                                        'Sortino Ratio', 'US Mkt Correlation', 'Date'])
             df.to_excel(writer, sheet_name='portfolios', index=False)
-            print('Saved..')
+            # print('Saved..')
             self.text_area.insert(END, "\n" + "Saved..")
 
         df = pd.DataFrame(all_data,
