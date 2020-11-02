@@ -100,7 +100,7 @@ class PortfolioVisualizerGUI:
         combo = []
         timing_model = self.timing_model.get().split(',')
         out = self.asset.get().split(',')
-        timing_period = self.frequency.get().split(',')
+        timing_period = self.period.get().split(',')
         trading_frequency = self.frequency.get().split(',')
         keywords = self.ticker.get().upper().split(',')
         for i in timing_model:
